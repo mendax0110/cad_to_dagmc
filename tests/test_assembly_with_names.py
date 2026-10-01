@@ -1,11 +1,12 @@
-from os import name
 import tempfile
-import cadquery as cq
-from cad_to_dagmc import CadToDagmc
 from pathlib import Path
+
+import cadquery as cq
 import pytest
-from test_python_api import get_volumes_and_materials_from_h5m
 from packaging.version import Version
+from test_python_api import get_volumes_and_materials_from_h5m
+
+from cad_to_dagmc import CadToDagmc
 
 # cq.Material requires CadQuery > 2.6.1
 CADQUERY_VERSION = Version(cq.__version__)

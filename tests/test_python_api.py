@@ -4,7 +4,6 @@ from pathlib import Path
 import cadquery as cq
 import gmsh
 import h5py
-import numpy as np
 import pytest
 
 from cad_to_dagmc import CadToDagmc

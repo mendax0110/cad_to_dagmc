@@ -1,8 +1,8 @@
 """Pytest configuration and fixtures for cad_to_dagmc tests."""
 
 import os
-import pytest
 
+import pytest
 
 # Check if pymoab is available
 try:

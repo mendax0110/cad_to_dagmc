@@ -1,12 +1,12 @@
-import gmsh
-from test_python_api import get_volumes_and_materials_from_h5m
-from test_h5m_in_transport import transport_particles_on_h5m_geometry
-import cadquery as cq
-import assembly_mesh_plugin
-import gmsh
 import math
-import cad_to_dagmc
+
+import cadquery as cq
+import gmsh
 import pytest
+from test_h5m_in_transport import transport_particles_on_h5m_geometry
+from test_python_api import get_volumes_and_materials_from_h5m
+
+import cad_to_dagmc
 
 try:
     import pydagmc

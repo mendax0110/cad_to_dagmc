@@ -1,11 +1,15 @@
 import warnings
 
-import pytest
 import cadquery as cq
+import pytest
 
 from cad_to_dagmc import CadToDagmc
-from cad_to_dagmc.core import resolve_set_size, set_sizes_for_mesh, init_gmsh, get_volumes
-
+from cad_to_dagmc.core import (
+    get_volumes,
+    init_gmsh,
+    resolve_set_size,
+    set_sizes_for_mesh,
+)
 
 # Unit tests for resolve_set_size helper function
 

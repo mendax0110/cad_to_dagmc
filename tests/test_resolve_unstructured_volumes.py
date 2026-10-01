@@ -1,9 +1,8 @@
-import pytest
 import cadquery as cq
+import pytest
 
 from cad_to_dagmc import CadToDagmc
 from cad_to_dagmc.core import resolve_unstructured_volumes
-
 
 # Unit tests for resolve_unstructured_volumes helper function
 

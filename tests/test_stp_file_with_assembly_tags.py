@@ -6,9 +6,9 @@ from pathlib import Path
 import cadquery as cq
 import pytest
 from packaging.version import Version
+from test_python_api import get_volumes_and_materials_from_h5m
 
 from cad_to_dagmc import CadToDagmc
-from test_python_api import get_volumes_and_materials_from_h5m
 
 # cq.Material requires CadQuery > 2.6.1
 # Reading materials from STEP files requires CadQuery > 2.6.2 (available in future release)

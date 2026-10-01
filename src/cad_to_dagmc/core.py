@@ -1,8 +1,11 @@
+import functools
+import importlib.util
+import tempfile
+import warnings
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterable
-import functools
-import importlib.util
+
 import cadquery as cq
 import gmsh
 import numpy as np
@@ -10,9 +13,7 @@ from cadquery import importers
 from cadquery.occ_impl.importers.assembly import importStep as importStepAssembly
 from cadquery.occ_impl.shapes import setThreads
 from OCP.OSD import OSD_ThreadPool
-import tempfile
-import warnings
-from typing import Iterable
+
 from cad_to_dagmc import __version__
 
 
@@ -521,7 +522,7 @@ def _vertices_to_h5m_pymoab(
     face_ids_with_solid_ids = {}
     for solid_id, triangles_on_each_face in triangles_by_solid_by_face.items():
         for face_id, triangles_on_face in triangles_on_each_face.items():
-            if face_id in face_ids_with_solid_ids.keys():
+            if face_id in face_ids_with_solid_ids:
                 face_ids_with_solid_ids[face_id].append(solid_id)
             else:
                 face_ids_with_solid_ids[face_id] = [solid_id]
@@ -555,7 +556,7 @@ def _vertices_to_h5m_pymoab(
         # moab_core.tag_set_data(tags["geom_dimension"], group_set, 4)
 
         for face_id, triangles_on_face in triangles_on_each_face.items():
-            if face_id not in added_surfaces_ids.keys():
+            if face_id not in added_surfaces_ids:
                 face_set = moab_core.create_meshset()
                 moab_core.tag_set_data(tags["global_id"], face_set, face_id)
                 moab_core.tag_set_data(tags["geom_dimension"], face_set, 2)
@@ -651,8 +652,9 @@ def _vertices_to_h5m_h5py(
     Creates an h5m file compatible with DAGMC using h5py directly,
     without requiring pymoab.
     """
-    import h5py
     from datetime import datetime
+
+    import h5py
 
     if len(material_tags) != len(triangles_by_solid_by_face):
         msg = f"The number of material_tags provided is {len(material_tags)} and the number of sets of triangles is {len(triangles_by_solid_by_face)}. You must provide one material_tag for every triangle set"
@@ -1348,7 +1350,7 @@ def check_material_tags(material_tags, iterable_solids):
             raise ValueError(msg)
         for material_tag in material_tags:
             if not isinstance(material_tag, str):
-                msg = f"material_tags should be an iterable of strings."
+                msg = "material_tags should be an iterable of strings."
                 raise ValueError(msg)
             if len(material_tag) > 28:
                 msg = (
@@ -2569,7 +2571,6 @@ class CadToDagmc:
         try:
             # Use the CadQuery direct mesh plugin
             if meshing_backend == "cadquery":
-                import cadquery_direct_mesh_plugin
                 # tolerance is documented as being in the units of the scaled
                 # geometry, matching the gmsh and cad-to-dagmc-mesher backends
                 # (both of which scale the geometry before meshing it). This
