@@ -19,7 +19,7 @@ ASSEMBLY_MATERIALS_AVAILABLE = CADQUERY_VERSION > Version("2.6.1")
 )
 def test_cadquery_assembly_with_materials():
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory() as _tmpdir:
 
         result = cq.Workplane().sphere(5)
         result2 = cq.Workplane().moveTo(10, 0).sphere(2)
@@ -78,7 +78,7 @@ def test_assembly_missing_material_tag_raises():
 )
 def test_cadquery_assembly_with_nested_assembly():
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory() as _tmpdir:
 
         result = cq.Workplane().sphere(5)
         result2 = cq.Workplane().moveTo(10, 0).sphere(2)

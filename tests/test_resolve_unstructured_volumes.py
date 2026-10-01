@@ -132,7 +132,7 @@ def test_unstructured_volumes_with_material_tag_string(tmp_path):
     vtk_file = tmp_path / "umesh.vtk"
 
     # Use material tag string to select volumes
-    dag_filename, umesh_filename = model.export_dagmc_h5m_file(
+    model.export_dagmc_h5m_file(
         filename=str(h5m_file),
         min_mesh_size=0.5,
         max_mesh_size=2.0,
@@ -163,7 +163,7 @@ def test_unstructured_volumes_with_mixed_int_and_string(tmp_path):
     vtk_file = tmp_path / "umesh.vtk"
 
     # Use mixed int and string
-    dag_filename, umesh_filename = model.export_dagmc_h5m_file(
+    model.export_dagmc_h5m_file(
         filename=str(h5m_file),
         min_mesh_size=0.5,
         max_mesh_size=2.0,
@@ -216,7 +216,7 @@ def test_unstructured_volumes_with_assembly_names(tmp_path):
     h5m_file = tmp_path / "dagmc.h5m"
     vtk_file = tmp_path / "umesh.vtk"
 
-    dag_filename, umesh_filename = model.export_dagmc_h5m_file(
+    model.export_dagmc_h5m_file(
         filename=str(h5m_file),
         min_mesh_size=0.5,
         max_mesh_size=2.0,

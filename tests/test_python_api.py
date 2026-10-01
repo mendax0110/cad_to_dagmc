@@ -11,8 +11,8 @@ from cad_to_dagmc.core import check_material_tags
 
 # Check if pymoab is available
 try:
-    import pymoab as mb
-    from pymoab import core, types
+    import pymoab as _mb  # noqa: F401
+    from pymoab import core, types  # noqa: F401
     PYMOAB_AVAILABLE = True
 except ImportError:
     PYMOAB_AVAILABLE = False
@@ -346,6 +346,11 @@ def test_check_material_tags_too_long():
         assert issubclass(w[-1].category, UserWarning)
         assert "Material tag" in str(w[-1].message)
         assert "a" * 29 in str(w[-1].message)
+
+
+def test_check_material_tags_rejects_non_string_values():
+    with pytest.raises(TypeError, match="material_tags should be an iterable of strings"):
+        check_material_tags([1], [1])
 
 
 @pytest.mark.parametrize(

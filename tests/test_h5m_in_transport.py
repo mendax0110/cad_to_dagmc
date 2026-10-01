@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
@@ -22,9 +24,9 @@ Tests that check that:
 def transport_particles_on_h5m_geometry(
     h5m_filename: str,
     material_tags: list,
-    nuclides: list = None,
-    cross_sections_xml: str = None,
-    vtk_filename: str = None,
+    nuclides: list | None = None,
+    cross_sections_xml: str | None = None,
+    vtk_filename: str | None = None,
 ):
     """A function for testing the geometry file with particle transport in
     DAGMC OpenMC. Requires openmc and either the cross_sections_xml to be
