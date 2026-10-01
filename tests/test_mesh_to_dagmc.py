@@ -1,5 +1,6 @@
 import math
 
+import assembly_mesh_plugin  # noqa: F401
 import cadquery as cq
 import gmsh
 import pytest
