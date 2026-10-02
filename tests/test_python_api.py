@@ -529,10 +529,12 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     model = CadToDagmc()
     model.add_cadquery_object(assembly, material_tags=["mat1", "mat2", "mat3"])
 
+    # Above Gmsh's default minimum, so per-volume sizes are applied without tiny meshes.
+    set_size = {1: 1.9, 2: 1.1, 3: 1.9}
     h5m_file = tmp_path / "dagmc.h5m"
     h5m_kwargs = {}
     if meshing_backend == "gmsh":
-        h5m_kwargs.update(set_size={1: 0.9, 2: 0.1, 3: 0.9}, min_mesh_size=0.1)
+        h5m_kwargs["set_size"] = set_size
     filename = model.export_dagmc_h5m_file(
         filename=str(h5m_file),
         meshing_backend=meshing_backend,
@@ -543,8 +545,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     vtk_file1 = tmp_path / "umesh_vol_1.vtk"
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file1),
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
-        min_mesh_size=0.1,
+        set_size=set_size,
         volumes=[1],  # only mesh volume 1 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -552,8 +553,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     vtk_file2 = tmp_path / "umesh_vol_2.vtk"
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file2),
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
-        min_mesh_size=0.1,
+        set_size=set_size,
         volumes=[2],  # only mesh volume 2 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -561,8 +561,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     vtk_file3 = tmp_path / "umesh_vol_3.vtk"
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file3),
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
-        min_mesh_size=0.1,
+        set_size=set_size,
         volumes=[3],  # only mesh volume 3 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -570,8 +569,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     vtk_file4 = tmp_path / "umesh_vol_1_2.vtk"
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file4),
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
-        min_mesh_size=0.1,
+        set_size=set_size,
         volumes=[1, 2],  # only mesh volumes 1 and 2 out of the three volumes
     )
 
