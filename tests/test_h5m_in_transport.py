@@ -45,6 +45,7 @@ def transport_particles_on_h5m_geometry(
     if nuclides is None:
         nuclides = list(NATURAL_ABUNDANCE.keys())
 
+    openmc.reset_auto_ids()
     materials = openmc.Materials()
     for i, material_tag in enumerate(material_tags):
         # simplified material definitions have been used to keen this example minimal
@@ -314,15 +315,17 @@ def test_umesh_with_volumes(meshing_backend):
     mat_tags = ["mat1", "mat2", "mat3"]
     model.add_cadquery_object(assembly, material_tags=mat_tags)
 
+    h5m_kwargs = {}
+    if meshing_backend == "gmsh":
+        h5m_kwargs.update(set_size={1: 0.9, 2: 0.1, 3: 0.9}, min_mesh_size=0.1)
     h5m_file = model.export_dagmc_h5m_file(
-        filename="dagmc.h5m",
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
-        meshing_backend=meshing_backend,
+        filename="dagmc.h5m", meshing_backend=meshing_backend, **h5m_kwargs
     )
 
     vtk_file = model.export_unstructured_mesh_file(
         filename="umesh_vol_1.vtk",
         set_size={1: 0.9, 2: 0.1, 3: 0.9},
+        min_mesh_size=0.1,
         volumes=[1],  # only mesh volume 2 out of the three volumes
     )
 

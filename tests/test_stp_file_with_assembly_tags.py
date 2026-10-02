@@ -30,7 +30,7 @@ def test_stp_file_with_assembly_names():
         assembly = cq.Assembly()
         assembly.add(sphere, name="tungsten")
         assembly.add(box, name="steel")
-        assembly.save(str(stp_file), exportType="STEP")
+        assembly.export(str(stp_file))
 
         # Load the STEP file using assembly_names
         model = CadToDagmc()
@@ -67,7 +67,7 @@ def test_stp_file_with_assembly_materials():
         assembly = cq.Assembly()
         assembly.add(sphere, name="sphere_part", material=cq.Material("gold"))
         assembly.add(box, name="box_part", material=cq.Material("silver"))
-        assembly.save(str(stp_file), exportType="STEP")
+        assembly.export(str(stp_file))
 
         # Load the STEP file using assembly_materials
         model = CadToDagmc()
@@ -100,7 +100,7 @@ def test_stp_file_with_assembly_names_and_scale_factor():
         assembly = cq.Assembly()
         assembly.add(sphere, name="tungsten")
         assembly.add(box, name="steel")
-        assembly.save(str(stp_file), exportType="STEP")
+        assembly.export(str(stp_file))
 
         # Load the STEP file using assembly_names with scale factor
         model = CadToDagmc()
@@ -134,7 +134,7 @@ def test_stp_file_with_manual_tags_still_works():
         assembly = cq.Assembly()
         assembly.add(sphere, name="part1")
         assembly.add(box, name="part2")
-        assembly.save(str(stp_file), exportType="STEP")
+        assembly.export(str(stp_file))
 
         # Load the STEP file using manual tags (original behavior)
         model = CadToDagmc()

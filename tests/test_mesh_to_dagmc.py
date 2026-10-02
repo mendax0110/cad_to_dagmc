@@ -56,7 +56,8 @@ def test_mesh_to_dagmc_with_mesh_object():
         2: "mat:insert",
     }
 
-    model = pydagmc.Model(test_h5m_filename)
+    with pytest.warns(UserWarning, match="Assigned geom_dimension=4"):
+        model = pydagmc.Model(test_h5m_filename)
     v1 = model.volumes_by_id[1]  # get volume by id number 1
     v2 = model.volumes_by_id[2]  # get volume by id number 2
     assert len(model.volumes_by_id) == 2
@@ -99,7 +100,8 @@ def test_mesh_to_dagmc_with_cadquery_object():
         1: "mat:firstmat",
         2: "mat:aluminum",
     }
-    model = pydagmc.Model(test_h5m_filename)
+    with pytest.warns(UserWarning, match="Assigned geom_dimension=4"):
+        model = pydagmc.Model(test_h5m_filename)
     v1 = model.volumes_by_id[1]  # get volume by id number 1
     v2 = model.volumes_by_id[2]  # get volume by id number 2
     assert len(model.volumes_by_id) == 2

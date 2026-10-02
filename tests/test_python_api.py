@@ -530,10 +530,13 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     model.add_cadquery_object(assembly, material_tags=["mat1", "mat2", "mat3"])
 
     h5m_file = tmp_path / "dagmc.h5m"
+    h5m_kwargs = {}
+    if meshing_backend == "gmsh":
+        h5m_kwargs.update(set_size={1: 0.9, 2: 0.1, 3: 0.9}, min_mesh_size=0.1)
     filename = model.export_dagmc_h5m_file(
         filename=str(h5m_file),
-        set_size={1: 0.9, 2: 0.1, 3: 0.9},
         meshing_backend=meshing_backend,
+        **h5m_kwargs,
     )
     assert Path(filename).is_file()
 
@@ -541,6 +544,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file1),
         set_size={1: 0.9, 2: 0.1, 3: 0.9},
+        min_mesh_size=0.1,
         volumes=[1],  # only mesh volume 1 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -549,6 +553,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file2),
         set_size={1: 0.9, 2: 0.1, 3: 0.9},
+        min_mesh_size=0.1,
         volumes=[2],  # only mesh volume 2 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -557,6 +562,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file3),
         set_size={1: 0.9, 2: 0.1, 3: 0.9},
+        min_mesh_size=0.1,
         volumes=[3],  # only mesh volume 3 out of the three volumes
     )
     assert Path(filename).is_file()
@@ -565,6 +571,7 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     filename = model.export_unstructured_mesh_file(
         filename=str(vtk_file4),
         set_size={1: 0.9, 2: 0.1, 3: 0.9},
+        min_mesh_size=0.1,
         volumes=[1, 2],  # only mesh volumes 1 and 2 out of the three volumes
     )
 
