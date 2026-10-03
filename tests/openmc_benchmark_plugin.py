@@ -17,4 +17,10 @@ def pytest_configure(config):
         openmc.reset_auto_ids()
         return dagmc_model(self, *args, **kwargs)
 
+    def export_stp_file_without_deprecation(
+        self, filename="common_geometry_object.step"
+    ):
+        self.cadquery_assembly().export(filename, exportType="STEP")
+
     BaseCommonGeometryObject.dagmc_model = dagmc_model_with_fresh_ids
+    BaseCommonGeometryObject.export_stp_file = export_stp_file_without_deprecation
