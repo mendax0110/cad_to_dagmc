@@ -54,8 +54,6 @@ def _surface_ids_and_shared_count(h5m_filename):
         except RuntimeError as exc:
             if "MOAB ErrorCode: MB_TAG_NOT_FOUND" not in str(exc):
                 raise
-            category = None
-        if category is None:
             continue
         if isinstance(category, bytes):
             category = category.decode(errors="ignore")
