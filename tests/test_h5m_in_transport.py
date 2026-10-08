@@ -315,13 +315,11 @@ def test_umesh_with_volumes(meshing_backend):
     mat_tags = ["mat1", "mat2", "mat3"]
     model.add_cadquery_object(assembly, material_tags=mat_tags)
 
-    # Above Gmsh's default minimum, so per-volume sizes are applied without tiny meshes.
-    set_size = {1: 1.9, 2: 1.1, 3: 1.9}
-    h5m_kwargs = {}
-    if meshing_backend == "gmsh":
-        h5m_kwargs["set_size"] = set_size
+    set_size = {1: 0.9, 2: 0.1, 3: 0.9}
     h5m_file = model.export_dagmc_h5m_file(
-        filename="dagmc.h5m", meshing_backend=meshing_backend, **h5m_kwargs
+        filename="dagmc.h5m",
+        set_size=set_size,
+        meshing_backend=meshing_backend,
     )
 
     vtk_file = model.export_unstructured_mesh_file(
