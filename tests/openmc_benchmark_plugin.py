@@ -1,4 +1,4 @@
-""""Reset OpenMC IDs between CSG and DAGMC models in benchmark comparisons."""
+"""Reset OpenMC IDs between CSG and DAGMC models in benchmark comparisons."""
 
 
 def pytest_runtest_setup(item):
