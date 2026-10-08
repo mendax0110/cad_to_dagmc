@@ -529,16 +529,12 @@ def test_unstructured_mesh_with_volumes(meshing_backend, tmp_path):
     model = CadToDagmc()
     model.add_cadquery_object(assembly, material_tags=["mat1", "mat2", "mat3"])
 
-    # Above Gmsh's default minimum, so per-volume sizes are applied without tiny meshes.
-    set_size = {1: 1.9, 2: 1.1, 3: 1.9}
+    set_size = {1: 0.9, 2: 0.1, 3: 0.9}
     h5m_file = tmp_path / "dagmc.h5m"
-    h5m_kwargs = {}
-    if meshing_backend == "gmsh":
-        h5m_kwargs["set_size"] = set_size
     filename = model.export_dagmc_h5m_file(
         filename=str(h5m_file),
+        set_size=set_size,
         meshing_backend=meshing_backend,
-        **h5m_kwargs,
     )
     assert Path(filename).is_file()
 
