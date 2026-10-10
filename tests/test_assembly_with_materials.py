@@ -19,7 +19,7 @@ ASSEMBLY_MATERIALS_AVAILABLE = CADQUERY_VERSION > Version("2.6.1")
 )
 def test_cadquery_assembly_with_materials():
 
-    with tempfile.TemporaryDirectory() as _tmpdir:
+    with tempfile.TemporaryDirectory() as tmpdir:
 
         result = cq.Workplane().sphere(5)
         result2 = cq.Workplane().moveTo(10, 0).sphere(2)
@@ -38,7 +38,9 @@ def test_cadquery_assembly_with_materials():
             cadquery_object=assembly, material_tags="assembly_materials"
         )
         test_h5m_filename = my_model.export_dagmc_h5m_file(
-            min_mesh_size=0.5, max_mesh_size=1.0e6
+            filename=str(Path(tmpdir) / "dagmc.h5m"),
+            min_mesh_size=0.5,
+            max_mesh_size=1.0e6,
         )
 
         assert Path(test_h5m_filename).is_file()
