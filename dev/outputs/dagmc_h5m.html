@@ -32,9 +32,10 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c2a74fa0" />
   
   <!-- So that users can add custom icons -->
@@ -48,7 +49,7 @@
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
-    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'outputs/dagmc_h5m';</script>
@@ -499,7 +500,7 @@
 <span class="n">model</span><span class="o">.</span><span class="n">export_dagmc_h5m_file</span><span class="p">(</span>
     <span class="n">filename</span><span class="o">=</span><span class="s2">"dagmc.h5m"</span><span class="p">,</span>
     <span class="n">meshing_backend</span><span class="o">=</span><span class="s2">"cad-to-dagmc-mesher"</span><span class="p">,</span>
-    <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
     <span class="n">angular_tolerance</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -517,7 +518,7 @@
 <section id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h2>
 <section id="export-dagmc-h5m-file">
-<h3><code class="docutils literal notranslate"><span class="pre">export_dagmc_h5m_file()</span></code><a class="headerlink" href="#export-dagmc-h5m-file" title="Link to this heading">#</a></h3>
+<span id="export_dagmc_h5m_file"></span><h3><code class="docutils literal notranslate"><span class="pre">export_dagmc_h5m_file()</span></code><a class="headerlink" href="#export-dagmc-h5m-file" title="Link to this heading">#</a></h3>
 <p><strong>Common Parameters:</strong></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -548,7 +549,12 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code></p></td>
 <td><p>Keyword-only thread count for imprinting. See <a class="reference internal" href="../advanced/imprinting.html"><span class="std std-doc">Imprinting</span></a> for validation and scope.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">implicit_complement_material_tag</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mesh_threads</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> or positive <code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code></p></td>
+<td><p>Keyword-only thread count for cad-to-dagmc-mesher meshing after the imprint. Fewer threads lower peak RAM; the mesh is the same. The gmsh backend warns that it is unused. See <a class="reference internal" href="../advanced/parallel_processing.html"><span class="std std-doc">Parallel Processing</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">implicit_complement_material_tag</span></code></p></td>
 <td><p>str</p></td>
 <td><p>None</p></td>
 <td><p>Void space material tag</p></td>
@@ -656,8 +662,8 @@ the unstructured output.</p>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code></p></td>
 <td><p>float</p></td>
-<td><p>0.01</p></td>
-<td><p>Linear tolerance for the surface mesh, in scaled-geometry units</p></td>
+<td><p>0.5</p></td>
+<td><p>Linear tolerance for the surface mesh, in cm after <code class="docutils literal notranslate"><span class="pre">scale_factor</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">angular_tolerance</span></code></p></td>
 <td><p>float</p></td>
@@ -703,12 +709,9 @@ the same deflection on the output mesh whichever backend you use:</p>
 </tbody>
 </table>
 </div>
-<p>A consequence is that the defaults get finer as <code class="docutils literal notranslate"><span class="pre">scale_factor</span></code> grows. This matters
-most for the cad-to-dagmc-mesher <code class="docutils literal notranslate"><span class="pre">tolerance</span></code> default of <code class="docutils literal notranslate"><span class="pre">0.01</span></code>: with
-<code class="docutils literal notranslate"><span class="pre">scale_factor=100</span></code> (metres to centimetres) that is a 0.1 mm deflection, which on a
-large model can generate a huge number of facets and exhaust memory. Scale the
-tolerance with the geometry, for example <code class="docutils literal notranslate"><span class="pre">tolerance=0.5</span></code> (5 mm) for a metre-scale
-model exported with <code class="docutils literal notranslate"><span class="pre">scale_factor=100</span></code>.</p>
+<p>OpenMC works in centimetres, so set <code class="docutils literal notranslate"><span class="pre">scale_factor</span></code> to bring the CAD to cm (for
+example <code class="docutils literal notranslate"><span class="pre">scale_factor=100</span></code> for a model in metres). The cad-to-dagmc-mesher default
+<code class="docutils literal notranslate"><span class="pre">tolerance</span></code> of <code class="docutils literal notranslate"><span class="pre">0.5</span></code> is then a 5 mm deflection.</p>
 <p><code class="docutils literal notranslate"><span class="pre">angular_tolerance</span></code> is an angle and is unaffected by <code class="docutils literal notranslate"><span class="pre">scale_factor</span></code>.</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">tet_volumes</span></code> and <code class="docutils literal notranslate"><span class="pre">target_edge_length</span></code> must be given together to write a volume mesh.</p>
